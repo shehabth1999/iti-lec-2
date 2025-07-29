@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }}</title>
+    <link rel="stylesheet" href="{% static 'product/css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Student Details</h1>
+        
+        <div class="student-detail">
+            <h2>
+                <span>Name:</span>
+                <span>{{ student.name }}</span>
+            </h2>
+            <h2>
+                <span>Age:</span>
+                <span>{{ student.age }} years</span>
+            </h2>
+            <h2>
+                <span>Email:</span>
+                <span>{{ student.email }}</span>
+            </h2>
+            <h2>
+                <span>Status:</span>
+                <span class="{% if student.is_active %}status-active{% else %}status-inactive{% endif %}">
+                    {% if student.is_active %}Active{% else %}Inactive{% endif %}
+                </span>
+            </h2>
+            <h2>
+                <span>Grade:</span>
+                <span>{{ student.grade }}%</span>
+            </h2>
+            <h2>
+                <span>Course:</span>
+                <span>{{ student.course.title }}</span>
+            </h2>
+        </div>
+
+        <div class="nav-links">
+            <a href="{% url 'create_student' %}">Create New Student</a>
+            <a href="{% url 'course_list' %}">View Courses</a>
+        </div>
+    </div>
+</body>
+</html>

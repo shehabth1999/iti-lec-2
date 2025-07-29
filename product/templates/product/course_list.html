@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }}</title>
+    <link rel="stylesheet" href="{% static 'product/css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Courses List</h1>
+
+        <div class="nav-links">
+            <a href="{% url 'create_student' %}">Create Student</a>
+        </div>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Instructor</th>
+                <th>Duration</th>
+                <th>Price</th>
+                <th>Popularity</th>
+            </tr>
+            {% for c in courses %}
+            <tr>
+                <td>{{ c.id }}</td>
+                <td>{{ c.title }}</td>
+                <td>{{ c.instructor }}</td>
+                <td>{{ c.duration }} hours</td>
+                <td class="price">${{ c.price }}</td>
+                <td>
+                    <span class="{% if c.is_popular %}popular{% else %}not-popular{% endif %}">
+                        {% if c.is_popular %}Popular{% else %}Standard{% endif %}
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

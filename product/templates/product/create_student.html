@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{page_title}}</title>
+    <link rel="stylesheet" href="{% static 'product/css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Create Student</h1>
+
+        {% if message %}
+        <div class="message">{{message}}</div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" name="name" placeholder="Enter student name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" placeholder="Enter email address" required>
+            </div>
+
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input type="number" name="age" placeholder="Enter age" min="1" max="120" required>
+            </div>
+
+            <div class="form-group">
+                <label for="is_active">
+                    <input type="checkbox" name="is_active" checked>
+                    Is Active
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label for="grade">Grade</label>
+                <input type="number" name="grade" placeholder="Enter grade" min="0" max="100" required>
+            </div>
+
+            <div class="form-group">
+                <label for="course">Course</label>
+                <select name="course" id="course" required>
+                    <option value="">Select Course</option>
+                    {% for course in courses %}
+                    <option value="{{ course.id }}">{{ course.title }} - {{ course.instructor }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <input type="submit" value="Create Student">
+        </form>
+
+        <div class="nav-links">
+            <a href="{% url 'course_list' %}">View Courses</a>
+        </div>
+
+        <h2>Current Students</h2>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+            {% for student in students %}
+            <tr>
+                <td>{{ student.name }}</td>
+                <td>{{ student.email }}</td>
+                <td><a href="{% url 'student_detail' student.pk %}">View Details</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>
