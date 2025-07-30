@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from product.models import Student, Course
+from product.forms import StudentForm
+from django.views.generic import ListView, DetailView, UpdateView, CreateView, DeleteView
+from django.urls import reverse_lazy
 
 def boolen_convertor(value):
     if value == "on":
@@ -41,38 +44,86 @@ def course_list(request):
     
     return render(request, 'product/course_list.html', context)
 
+class CourseListView(ListView):
+    model = Course
+    template_name = "product/course_list.html"
+    context_object_name = "courses"
+
+class StudentDetailsView(DetailView):
+    model = Student
+    template_name = "product/student_detail.html"
+    context_object_name = "student"
+
+class StudentUpdateView(UpdateView):
+    model = Student
+    template_name = "product/create_student.html"
+    context_object_name = "student"
+    form_class = StudentForm
+    success_url = reverse_lazy("students_list")
+
+
+class StudentCreateView(CreateView):
+    model = Student
+    template_name = "product/create_student.html"
+    context_object_name = "student"
+    form_class = StudentForm
+    success_url = reverse_lazy("students_list")
+
 
 def create_studnet(request):
 
     context = {
         "page_title": "Create Student",
-        "courses": Course.objects.all()
+        "courses": Course.objects.all(),
+        "form": StudentForm()
     }
 
     if request.method == "POST":
         data = request.POST
+        files = request.FILES
 
-        name = data.get("name")
-        age = data.get("age")
-        email = data.get("email")
-        is_active = boolen_convertor(data.get("is_active"))
-        grade = data.get("grade")
-        course_id = data.get("course")
-        
-        print(name, age, email, is_active, grade)
-        
-        # validate the data
-        
-        # create the data
-        student = Student.objects.create(name=name, age=age, email=email, is_active=is_active, grade=grade, course_id=course_id)
-
-        print("student.pk", student.pk)
+        form = StudentForm(data=data, files=files)
+        if form.is_valid():
+            form.save()
+            context["message"] = "Student created successfully"
+            return render(request, "product/create_student.html", context)
+        else:
+            context["message"] = form.errors
 
         context["students"] = Student.objects.all()
-
-        context["message"] = f"{name} created successfully"
         return render(request, "product/create_student.html", context)
 
     else :
         context["students"] = Student.objects.all()
         return render(request, "product/create_student.html", context)    
+
+
+from django.views import View
+
+class StudentView(View):
+    def get(self, request):
+        context = {
+            "page_title": "Create Student",
+            "courses": Course.objects.all(),
+            "form": StudentForm()
+        }
+        return render(request, "product/create_student.html", context)
+
+    def post(self, request):
+        context = {
+            "page_title": "Create Student",
+            "courses": Course.objects.all(),
+            "form": StudentForm()
+        }
+        data = request.POST
+        files = request.FILES
+        form = StudentForm(data=data, files=files)
+        if form.is_valid():
+            form.save()
+            context["message"] = "Student created successfully"
+            return render(request, "product/create_student.html", context)
+        else:
+            context["message"] = form.errors
+        return render(request, "product/create_student.html", context)
+    
+    

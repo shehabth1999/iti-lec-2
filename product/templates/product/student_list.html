@@ -1,13 +1,6 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page_title }}</title>
-    <link rel="stylesheet" href="{% static 'product/css/style.css' %}">
-</head>
-<body>
+{% extends 'layout/base.html' %}
+
+{% block content %}
     <div class="container">
         <h1>Students List</h1>
         
@@ -27,9 +20,9 @@
                 <td>{{ student.name }}</td>
                 <td>{{ student.email }}</td>
                 <td><a href="{% url 'student_detail' student.pk %}">View Details</a></td>
+                <td><a href="{% url 'update_student' student.pk %}">Update</a></td>
             </tr>
             {% endfor %}
         </table>
     </div>
-</body>
-</html>
+{% endblock %}

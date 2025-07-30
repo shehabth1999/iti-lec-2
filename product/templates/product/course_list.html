@@ -1,13 +1,6 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page_title }}</title>
-    <link rel="stylesheet" href="{% static 'product/css/style.css' %}">
-</head>
-<body>
+{% extends 'layout/base.html' %}
+
+{% block content %}
     <div class="container">
         <h1>Courses List</h1>
 
@@ -40,5 +33,4 @@
             {% endfor %}
         </table>
     </div>
-</body>
-</html>
+{% endblock %}

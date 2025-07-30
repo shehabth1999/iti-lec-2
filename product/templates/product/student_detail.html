@@ -1,17 +1,11 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page_title }}</title>
-    <link rel="stylesheet" href="{% static 'product/css/style.css' %}">
-</head>
-<body>
+{% extends 'layout/base.html' %}
+
+{% block content %}
     <div class="container">
         <h1>Student Details</h1>
         
         <div class="student-detail">
+            <img src="{% if student.image %} {{ student.image.url }} {% else %} https://i.pinimg.com/736x/c0/74/9b/c0749b7cc401421662ae901ec8f9f660.jpg {% endif %}" alt="{{ student.name }}" width="100" height="100">
             <h2>
                 <span>Name:</span>
                 <span>{{ student.name }}</span>
@@ -45,5 +39,4 @@
             <a href="{% url 'course_list' %}">View Courses</a>
         </div>
     </div>
-</body>
-</html>
+{% endblock %}
